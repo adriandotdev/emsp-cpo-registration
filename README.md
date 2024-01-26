@@ -4,17 +4,17 @@
 
 - **config**
 
-  - This folder consists of all of the configuration files such as loggers.
+  - This folder consists all of the configuration files such as loggers.
 
 - **controllers**
 
   - This folder consists all of the APIs.
-  - Naming Convention
+  - File Naming Convention
     - user.api.js
 
 - **database**
 
-  - This folder must only consists all of the configurations of specific database.
+  - This folder must only consists all of the configurations of a specific database.
 
 - **middlewares**
 
@@ -26,19 +26,19 @@
 
 - **services**
 
-  - This folder consists all of the services or business logic of a certain API. It also includes the ability to transform data to be sent as a response.
+  - This folder consists all of the services or business logic of a certain API. It also includes the ability to transform data to be be sent at the controller.
 
 - **test**
 
-  - This folder consists of all the test files.
+  - This folder consists all of the test files.
 
 - **utils**
 
-  - This folder consists of other miscallaneous for the system. Example is Email sender.
+  - This folder consists of other important classes or functions for the system. Example is Email sender.
 
 - **.env**
 
-  - A file that consists of all environment variables for the app.
+  - A file that consists all of the environment variables for the app.
 
 - **.gitignore**
 
@@ -46,7 +46,7 @@
 
 - **app.js**
 
-  - A starting point file. This is where you import all of your controllers.
+  - A starting point file. This is where you include (import) all of your controllers.
 
 - **package.json**
 
@@ -54,4 +54,4 @@
 
 - **server.js**
 
-  - This file is will start the server
+  - A file that will start a server.
