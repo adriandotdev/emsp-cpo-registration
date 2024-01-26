@@ -23,14 +23,23 @@
 - **repository**
 
   - This folder consists all of the files related to persistence layer access.
+  - Repositories File Name Convention
+    - UserRepository.js
 
 - **services**
 
   - This folder consists all of the services or business logic of a certain API. It also includes the ability to transform data to be be sent at the controller.
+  - Services File Name Convention
+    - UserService.js
 
 - **test**
 
   - This folder consists all of the test files.
+  - Test File Naming Convention
+    - User.test.js
+    - UserUnit.test.js
+    - UserIntegration.test.js
+    - UserRegression.test.js
 
 - **utils**
 
@@ -39,6 +48,10 @@
 - **.env**
 
   - A file that consists all of the environment variables for the app.
+  - Environment Variable Naming Convention
+    - NODE_ENV=stg
+    - DB_HOST=localhost
+    - DB_PASSWORD=password
 
 - **.gitignore**
 
