@@ -69,6 +69,10 @@
 
   - A file that will start a server.
 
+> **NOTE**: Ignore the readme-images folder
+
 ## package.json
 
-![Package.json Scripts](image.png)In `package.json`, you can set the environment into testing, by running the command `npm run test`. To be able to change an environment variable in a script, install `dotenv`, and `cross-env` npm package.
+![Package.json Scripts](./readme-images/image.png)
+
+In `package.json`, you can set the environment into testing, by running the command `npm run test`. To be able to change an environment variable in a script, install `dotenv`, and `cross-env` npm package.
