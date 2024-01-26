@@ -83,7 +83,7 @@ In `package.json`, you can set the environment into testing, by running the comm
 
 This is the pattern I used for the codebase. This pattern will separate the concerns for the APIs, Business logics, and persistence layer access.
 
-### Sample Code
+### Sample Implementation
 
 **User Controller**
 
