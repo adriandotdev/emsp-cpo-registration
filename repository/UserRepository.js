@@ -12,4 +12,10 @@ module.exports = class UserRepository {
 			]);
 		});
 	}
+
+	FindUserById(userId) {
+		return new Promise((resolve, reject) => {
+			resolve({ user_id: 1, name: "Nads" });
+		});
+	}
 };
