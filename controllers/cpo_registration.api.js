@@ -6,6 +6,10 @@ const { HttpUnprocessableEntity } = require("../utils/HttpError");
 
 const multer = require("multer");
 const path = require("path");
+
+// Service
+const CPORegistrationService = require("../services/CPORegistrationService");
+
 // Set up multer to handle text fields
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -29,8 +33,9 @@ const allowedFileTypes = (req, file, cb) => {
 		return cb(null, true);
 	} else {
 		cb(
-			new multer.MulterError(
-				"Invalid file types. Please upload png or svg files with maximum 80 kilobytes in size."
+			new HttpUnprocessableEntity(
+				"Invalid File Types. Accepted File Types: [png, svg]",
+				[]
 			)
 		);
 	}
@@ -43,6 +48,8 @@ const upload = multer({
 });
 
 module.exports = (app) => {
+	const service = new CPORegistrationService();
+
 	function validate(req, res) {
 		const ERRORS = validationResult(req);
 
@@ -57,17 +64,44 @@ module.exports = (app) => {
 	app.post(
 		"/emsp/api/v1/cpo/register",
 		upload.single("logo"),
-		[body("user").notEmpty().withMessage("User is empty")],
+		[
+			body("cpo_name")
+				.notEmpty()
+				.withMessage("Missing required property: cpo_name"),
+			body("contact_name")
+				.notEmpty()
+				.withMessage("Missing required property: contact_name"),
+			body("contact_email")
+				.notEmpty()
+				.withMessage("Missing required property: contact_email"),
+		],
 		async (req, res) => {
-			logger.info({ REGISTER_CPO_API_REQUEST: { message: "Location" } });
+			const { cpo_name, contact_name, contact_email } = req.body;
+
+			logger.info({
+				REGISTER_CPO_API_REQUEST: {
+					body: { ...req.body },
+					file: { ...req.file },
+				},
+			});
+
+			if (!req.file) {
+				return res
+					.status(422)
+					.json({ status: 422, data: [], message: "Unprocessable Entity" });
+			}
 
 			try {
 				validate(req, res);
 
-				logger.info({ REGISTER_CPO_API_RESPONSE: { status: 200 } });
+				await service.RegisterCPO({
+					cpo_name,
+					contact_name,
+					contact_email,
+					filename: req.file?.filename,
+				});
 
-				console.log(req.body);
-				console.log(req.file);
+				logger.info({ REGISTER_CPO_API_RESPONSE: { status: 200 } });
 
 				return res.status(200).json({ status: 200, data: [] });
 			} catch (err) {

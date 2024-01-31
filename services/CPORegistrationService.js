@@ -8,6 +8,6 @@ module.exports = class CPORegistrationService {
 	}
 
 	async RegisterCPO(cpoData) {
-		this.#repository.RegisterCPO(cpoData);
+		await this.#repository.RegisterCPO(cpoData);
 	}
 };
