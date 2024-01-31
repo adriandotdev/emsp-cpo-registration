@@ -10,4 +10,10 @@ module.exports = class CPORegistrationService {
 	async RegisterCPO(cpoData) {
 		await this.#repository.RegisterCPO(cpoData);
 	}
+
+	async GetListOfPartyIDs() {
+		const partyIDs = await this.#repository.GetListOfPartyIDs();
+
+		return partyIDs;
+	}
 };

@@ -128,4 +128,35 @@ module.exports = (app) => {
 			}
 		}
 	);
+
+	app.get("/emsp/api/v1/party_ids", async (req, res) => {
+		logger.info({ GET_PARTY_IDS_API_REQUEST: { message: "SUCCESS" } });
+
+		try {
+			const partyIDs = await service.GetListOfPartyIDs();
+
+			logger.info({
+				GET_PARTY_IDS_API_RESPONSE: { no_of_party_ids: partyIDs.length },
+			});
+
+			return res.status(200).json({ status: 200, data: partyIDs });
+		} catch (err) {
+			if (err !== null) {
+				logger.error({ GET_PARTY_IDS_API_ERROR: { message: err.message } });
+
+				return res
+					.status(err.status)
+					.json({ status: err.status, data: err.data, message: err.message });
+			}
+
+			logger.error({
+				REGISTER_CPO_API_ERROR: {
+					message: "Internal Server Error",
+				},
+			});
+			return res
+				.status(500)
+				.json({ status: 500, data: [], message: "Internal Server Error" });
+		}
+	});
 };

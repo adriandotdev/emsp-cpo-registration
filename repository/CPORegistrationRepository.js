@@ -24,4 +24,18 @@ module.exports = class CPORegistrationRepository {
 			);
 		});
 	}
+
+	GetListOfPartyIDs() {
+		const query = `SELECT party_id, company_name FROM company_partner_details`;
+
+		return new Promise((resolve, reject) => {
+			mysql.query(query, (err, result) => {
+				if (err) {
+					reject(err);
+				}
+
+				resolve(result);
+			});
+		});
+	}
 };
