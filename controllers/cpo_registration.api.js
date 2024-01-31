@@ -65,6 +65,9 @@ module.exports = (app) => {
 		"/emsp/api/v1/cpo/register",
 		upload.single("logo"),
 		[
+			body("party_id")
+				.notEmpty()
+				.withMessage("Missing required property: party_id"),
 			body("cpo_name")
 				.notEmpty()
 				.withMessage("Missing required property: cpo_name"),
@@ -76,7 +79,7 @@ module.exports = (app) => {
 				.withMessage("Missing required property: contact_email"),
 		],
 		async (req, res) => {
-			const { cpo_name, contact_name, contact_email } = req.body;
+			const { party_id, cpo_name, contact_name, contact_email } = req.body;
 
 			logger.info({
 				REGISTER_CPO_API_REQUEST: {
@@ -95,6 +98,7 @@ module.exports = (app) => {
 				validate(req, res);
 
 				await service.RegisterCPO({
+					party_id,
 					cpo_name,
 					contact_name,
 					contact_email,

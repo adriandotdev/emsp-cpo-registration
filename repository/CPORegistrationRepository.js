@@ -2,12 +2,13 @@ const mysql = require("../database/mysql");
 
 module.exports = class CPORegistrationRepository {
 	RegisterCPO(cpoData) {
-		const query = `INSERT INTO cpos (country_code, cpo_name, contact_name, contact_email, logo) VALUES (?,?,?,?,?)`;
+		const query = `INSERT INTO cpos (country_code, party_id, cpo_name, contact_name, contact_email, logo) VALUES (?,?,?,?,?,?)`;
 		return new Promise((resolve, reject) => {
 			mysql.query(
 				query,
 				[
 					"PH",
+					cpoData.party_id,
 					cpoData.cpo_name,
 					cpoData.contact_name,
 					cpoData.contact_email,
