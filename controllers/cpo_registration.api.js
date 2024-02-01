@@ -65,10 +65,10 @@ module.exports = (app) => {
 		"/emsp/api/v1/cpo/register",
 		upload.single("logo"),
 		[
-			body("party_id")
-				.notEmpty()
-				.withMessage("Missing required property: party_id"),
 			body("cpo_name")
+				.notEmpty()
+				.withMessage("Missing required property: cpo_name"),
+			body("address")
 				.notEmpty()
 				.withMessage("Missing required property: cpo_name"),
 			body("contact_name")
@@ -77,9 +77,13 @@ module.exports = (app) => {
 			body("contact_email")
 				.notEmpty()
 				.withMessage("Missing required property: contact_email"),
+			body("contact_number")
+				.notEmpty()
+				.withMessage("Missing required property: contact_email"),
 		],
 		async (req, res) => {
-			const { party_id, cpo_name, contact_name, contact_email } = req.body;
+			const { cpo_name, address, contact_name, contact_email, contact_number } =
+				req.body;
 
 			logger.info({
 				REGISTER_CPO_API_REQUEST: {
@@ -98,10 +102,11 @@ module.exports = (app) => {
 				validate(req, res);
 
 				await service.RegisterCPO({
-					party_id,
 					cpo_name,
+					address,
 					contact_name,
 					contact_email,
+					contact_number,
 					filename: req.file?.filename,
 				});
 
@@ -128,35 +133,4 @@ module.exports = (app) => {
 			}
 		}
 	);
-
-	app.get("/emsp/api/v1/party_ids", async (req, res) => {
-		logger.info({ GET_PARTY_IDS_API_REQUEST: { message: "SUCCESS" } });
-
-		try {
-			const partyIDs = await service.GetListOfPartyIDs();
-
-			logger.info({
-				GET_PARTY_IDS_API_RESPONSE: { no_of_party_ids: partyIDs.length },
-			});
-
-			return res.status(200).json({ status: 200, data: partyIDs });
-		} catch (err) {
-			if (err !== null) {
-				logger.error({ GET_PARTY_IDS_API_ERROR: { message: err.message } });
-
-				return res
-					.status(err.status)
-					.json({ status: err.status, data: err.data, message: err.message });
-			}
-
-			logger.error({
-				REGISTER_CPO_API_ERROR: {
-					message: "Internal Server Error",
-				},
-			});
-			return res
-				.status(500)
-				.json({ status: 500, data: [], message: "Internal Server Error" });
-		}
-	});
 };
