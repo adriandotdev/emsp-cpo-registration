@@ -76,10 +76,24 @@ module.exports = (app) => {
 				.withMessage("Missing required property: contact_name"),
 			body("contact_email")
 				.notEmpty()
-				.withMessage("Missing required property: contact_email"),
+				.withMessage("Missing required property: contact_email")
+				.custom((value) =>
+					String(value).match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)
+				)
+				.withMessage(
+					"Invalid Value. Accepted contact email format: youremail@gmail.com"
+				),
 			body("contact_number")
 				.notEmpty()
-				.withMessage("Missing required property: contact_email"),
+				.withMessage("Missing required property: contact_email")
+				.custom(
+					(value) =>
+						String(value).match(/^09\d{9}$/) ||
+						String(value).match(/^\+639\d{9}$/)
+				)
+				.withMessage(
+					"Invalid Value. Accepted contact number format: 09124512234 or +639124512234"
+				),
 		],
 		async (req, res) => {
 			const { cpo_name, address, contact_name, contact_email, contact_number } =
@@ -115,11 +129,18 @@ module.exports = (app) => {
 				return res.status(200).json({ status: 200, data: [] });
 			} catch (err) {
 				if (err !== null) {
-					logger.error({ REGISTER_CPO_API_ERROR: { message: err.message } });
+					logger.error({
+						REGISTER_CPO_API_ERROR: { message: err.message },
+					});
 
-					return res
-						.status(err.status)
-						.json({ status: err.status, data: err.data, message: err.message });
+					logger.error({
+						data: err.data,
+					});
+					return res.status(err.status ? err.status : 500).json({
+						status: err.status ? err.status : 500,
+						data: err.data,
+						message: err.message,
+					});
 				}
 
 				logger.error({
