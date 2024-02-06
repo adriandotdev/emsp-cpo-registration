@@ -126,7 +126,11 @@ module.exports = (app) => {
 
 				logger.info({ REGISTER_CPO_API_RESPONSE: { status: 200 } });
 
-				return res.status(200).json({ status: 200, data: [] });
+				return res.status(200).json({
+					status: 200,
+					data: [],
+					message: "Kindly wait for the admin approval",
+				});
 			} catch (err) {
 				if (err !== null) {
 					logger.error({
